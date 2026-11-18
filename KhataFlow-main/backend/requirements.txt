@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+aiosqlite
+pydantic
+python-dotenv
+groq
+httpx
+websockets
+SpeechRecognition
+numpy
+audioop-lts; python_version >= "3.13"
+vosk
+pytest>=8.0.0
+pytest-asyncio

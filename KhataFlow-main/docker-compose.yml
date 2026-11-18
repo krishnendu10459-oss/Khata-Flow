@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: khataflow-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - GNANI_API_KEY=${GNANI_API_KEY}
+      - GNANI_TOKEN=${GNANI_TOKEN}
+      - GNANI_ACCESS_KEY=${GNANI_ACCESS_KEY}
+      - GNANI_LANG_CODE=${GNANI_LANG_CODE:-hi-IN}
+      - GNANI_VOICE=${GNANI_VOICE:-female}
+      - GNANI_STT_URL=${GNANI_STT_URL:-wss://asr.gnani.ai/listen}
+      - GNANI_TTS_URL=${GNANI_TTS_URL:-https://tts.gnani.ai/synthesize}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - DATABASE_URL=sqlite+aiosqlite:////app/data/khataflow.db
+    volumes:
+      - khataflow_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  khataflow_data:
+    driver: local
